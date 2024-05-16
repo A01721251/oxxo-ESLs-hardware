@@ -44,7 +44,7 @@ def update_data():
     new_data = fetch_data_from_backend()
     price_changes = compare_prices(latest_data, new_data)
     latest_data = new_data  # Update the latest_data with the new fetch
-    return jsonify({"status": "Data updated", "changes": price_changes, "data": latest_data})
+    return jsonify({"status": "Data updated", "changes": price_changes})
 
 @app.route('/get_data')
 def get_data():
