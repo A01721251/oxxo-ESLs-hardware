@@ -41,12 +41,20 @@ def update_display_design1(product_name, price):
             logo_y = (epd.width - logo.size[1]) // 2
 
             # Split the logo into its red and black parts
-            red_channel = logo.getchannel('R')
-            black_white_image = ImageOps.invert(red_channel).convert('1')  # Inverted red for black/white display
+            red_image = Image.new("1", logo.size, 255)
+            black_image = Image.new("1", logo.size, 255)
+
+            for y in range(logo.size[1]):
+                for x in range(logo.size[0]):
+                    r, g, b, a = logo.getpixel((x, y))
+                    if r > 200 and g < 50 and b < 50:  # Red parts
+                        red_image.putpixel((x, y), 0)  # Red ink
+                    elif r < 50 and g < 50 and b < 50:  # Black parts
+                        black_image.putpixel((x, y), 0)  # Black ink
 
             # Draw the logo parts
-            Rimage.paste(logo, (logo_x, logo_y), mask=red_channel)
-            Himage.paste(black_white_image, (logo_x, logo_y), mask=black_white_image)
+            Rimage.paste(red_image, (logo_x, logo_y), mask=red_image)
+            Himage.paste(black_image, (logo_x, logo_y), mask=black_image)
 
         # Draw product name in black
         draw_black.text((10, 10), product_name, font=font24, fill=0)  # 0: black
