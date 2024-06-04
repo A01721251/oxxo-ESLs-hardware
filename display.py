@@ -120,7 +120,7 @@ def update_display_design3(product_name, volume, price_per_liter, price, barcode
         draw_black.rectangle((10, 130, 180, 150), fill=0)  # Placeholder for barcode
         draw_black.text((10, 160), barcode_text, font=font18, fill=0)
 
-        epd.display(epd.getbuffer(Himage))
+        epd.display(epd.getbuffer(Himage), epd.getbuffer(Rimage))
         logging.info("Updated display with new content")
 
     except IOError as e:
@@ -141,7 +141,7 @@ font18 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 18)  # Smaller fo
 try:
     while True:
          # Choose the design to display
-        design_choice = 2  # Change to 1 to display the first design, 2 for the second design
+        design_choice = 3  # Change to 1 to display the first design, 2 for the second design
 
         if design_choice == 1:
             update_display_design1('Takis', '$20.99')
