@@ -49,8 +49,10 @@ def update_display_design1(product_name, price):
 # Function to update the display with the second design
 def update_display_design2(product_name, price, volume, discount, barcode_text):
     try:
-        # Ensure correct dimensions for the display
-        display_width, display_height = epd.width, epd.height
+        logging.info("Starting display update...")
+
+        # Set the display resolution
+        display_width, display_height = 250, 122
 
         # Create blank images for drawing
         Himage = Image.new('1', (display_width, display_height), 255)  # 255: white
@@ -61,9 +63,10 @@ def update_display_design2(product_name, price, volume, discount, barcode_text):
 
         # Clear the background
         draw_black.rectangle((0, 0, display_width, display_height), fill=255)  # White background
-        draw_red.rectangle((0, 0, 90, display_height), fill=0)  # Red background for the left section
-
+        draw_red.rectangle((0, 0, display_width, display_height), fill=255)    # Red background
+        
         # Draw price and discount in red
+        draw_red.rectangle((0, 0, 90, display_height), fill=0)  # Red background for the left section
         draw_red.text((10, 10), "NOW", font=font24, fill=255)  # White text on red background
         draw_red.text((10, 40), price, font=font24, fill=255)
         draw_red.text((10, 70), f"SAVE\n{discount}%", font=font18, fill=255)
@@ -79,22 +82,15 @@ def update_display_design2(product_name, price, volume, discount, barcode_text):
         draw_black.text((100, 90), volume, font=font18, fill=0)
 
         # Draw barcode
-        draw_black.rectangle((100, 120, 220, 130), fill=0)  # Placeholder for barcode
-        draw_black.text((100, 140), barcode_text, font=font18, fill=0)
+        draw_black.rectangle((10, 100, 110, 110), fill=0)  # Placeholder for barcode
+        draw_black.text((10, 112), barcode_text, font=font18, fill=0)
 
-        # Display the image on the e-paper display
-        # If the display function takes two arguments, combine the buffers appropriately
-        if hasattr(epd, 'display'):
-            if epd.display.__code__.co_argcount == 2:
-                combined_image = Image.new('1', (display_width, display_height), 255)
-                combined_image.paste(Himage, (0, 0))
-                epd.display(epd.getbuffer(combined_image))
-            elif epd.display.__code__.co_argcount == 3:
-                epd.display(epd.getbuffer(Himage), epd.getbuffer(Rimage))
-            else:
-                raise TypeError(f"EPD.display() accepts {epd.display.__code__.co_argcount} arguments, which is unexpected.")
+        logging.info("Displaying the images...")
         
-        logging.info("Updated display with new content")
+        # Display the image on the e-paper display
+        epd.display(epd.getbuffer(Himage), epd.getbuffer(Rimage))
+        
+        logging.info("Display update completed.")
 
     except IOError as e:
         logging.error(e)
