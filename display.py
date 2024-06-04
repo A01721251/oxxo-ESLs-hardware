@@ -3,7 +3,7 @@
 import sys
 import os
 import logging
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageOps
 from waveshare_epd import epd2in13bc  # For tri-color display
 
 # Set up logging
