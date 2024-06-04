@@ -27,18 +27,32 @@ def update_display_design1(product_name, price):
         draw_black.rectangle((0, 0, epd.height, epd.width), fill=255)  # Clear background (white)
         draw_red.rectangle((0, 0, epd.height, epd.width), fill=255)  # Clear background (white)
 
-        # Draw the OXXO logo in black
-        logo_path = os.path.join(imgdir, 'oxxo.png')
+        # Load the OXXO logo and prepare it for drawing
+        logo_path = os.path.join(imgdir, 'Screenshot 2024-06-04 at 5.34.54 p.m..png')
         if os.path.exists(logo_path):
             logo = Image.open(logo_path)
-            logo = logo.resize((80, 40))  # Resize logo to fit the display
-            Himage.paste(logo, (10, 10))
+            logo = logo.convert("RGBA")
+            logo_w, logo_h = logo.size
+            max_size = (epd.height - 20, epd.width - 20)  # Leaving some margin
+            logo.thumbnail(max_size, Image.ANTIALIAS)
+
+            # Center the logo on the display
+            logo_x = (epd.height - logo.size[0]) // 2
+            logo_y = (epd.width - logo.size[1]) // 2
+
+            # Split the logo into its red and black parts
+            red_channel = logo.getchannel('R')
+            black_white_image = ImageOps.invert(red_channel).convert('1')  # Inverted red for black/white display
+
+            # Draw the logo parts
+            Rimage.paste(logo, (logo_x, logo_y), mask=red_channel)
+            Himage.paste(black_white_image, (logo_x, logo_y), mask=black_white_image)
 
         # Draw product name in black
-        draw_black.text((100, 10), product_name, font=font24, fill=0)  # 0: black
+        draw_black.text((10, 10), product_name, font=font24, fill=0)  # 0: black
 
         # Draw price in red
-        draw_red.text((100, 60), price, font=font24, fill=0)  # 0: red
+        draw_red.text((10, 50), price, font=font24, fill=0)  # 0: red
 
         # Display the image on the e-paper display
         epd.display(epd.getbuffer(Himage), epd.getbuffer(Rimage))
