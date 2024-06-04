@@ -125,7 +125,7 @@ epd.Clear()
 
 # Load fonts
 font24 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 24)
-font18 = ImageFont.truetype(os.path.join(fontdir, 'YourFont.ttf'), 18)  # Smaller font size
+font18 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 18)  # Smaller font size
 
 # Main loop
 try:
