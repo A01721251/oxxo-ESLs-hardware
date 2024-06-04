@@ -15,32 +15,35 @@ logging.basicConfig(level=logging.DEBUG)
 imgdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'images')
 fontdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'fonts')
 
-# Function to update the display
+# Function to update the display with the first design
 def update_display_design1(product_name, price):
     try:
-        # Create a blank image for drawing
-        Himage = Image.new('1', (epd.height, epd.width), 255)  # 255: clear the frame
-        draw = ImageDraw.Draw(Himage)
+        # Create blank images for black and red content
+        Himage = Image.new('1', (epd.height, epd.width), 255)  # 255: white
+        Rimage = Image.new('1', (epd.height, epd.width), 255)  # For red ink
 
-        # Drawing the price tag
+        draw_black = ImageDraw.Draw(Himage)
+        draw_red = ImageDraw.Draw(Rimage)
+
         logging.info("Drawing the price tag...")
-        draw.rectangle((0, 0, epd.height, epd.width), fill=255)  # Clear background
+        draw_black.rectangle((0, 0, epd.height, epd.width), fill=255)  # Clear background (white)
+        draw_red.rectangle((0, 0, epd.height, epd.width), fill=255)  # Clear background (white)
 
-        # Draw the OXXO logo
+        # Draw the OXXO logo in black
         logo_path = os.path.join(imgdir, 'oxxo.png')
         if os.path.exists(logo_path):
             logo = Image.open(logo_path)
             logo = logo.resize((80, 40))  # Resize logo to fit the display
             Himage.paste(logo, (10, 10))
 
-        # Draw product name
-        draw.text((100, 10), product_name, font=font24, fill=0)
+        # Draw product name in black
+        draw_black.text((100, 10), product_name, font=font24, fill=0)  # 0: black
 
-        # Draw price
-        draw.text((100, 60), price, font=font24, fill=0)
+        # Draw price in red
+        draw_red.text((100, 60), price, font=font24, fill=0)  # 0: red
 
         # Display the image on the e-paper display
-        epd.display(epd.getbuffer(Himage))
+        epd.display(epd.getbuffer(Himage), epd.getbuffer(Rimage))
         logging.info("Updated display with new content")
 
     except IOError as e:
@@ -49,24 +52,18 @@ def update_display_design1(product_name, price):
 # Function to update the display with the second design
 def update_display_design2(product_name, price, volume, discount, barcode_text):
     try:
-        logging.info("Starting display update...")
-
-        # Set the display resolution
-        display_width, display_height = 250, 122
-
-        # Create blank images for drawing
-        Himage = Image.new('1', (display_width, display_height), 255)  # 255: white
-        Rimage = Image.new('1', (display_width, display_height), 255)  # For red ink
+        # Create blank images for black and red content
+        Himage = Image.new('1', (epd.height, epd.width), 255)  # 255: white
+        Rimage = Image.new('1', (epd.height, epd.width), 255)  # For red ink
 
         draw_black = ImageDraw.Draw(Himage)
         draw_red = ImageDraw.Draw(Rimage)
 
-        # Clear the background
-        draw_black.rectangle((0, 0, display_width, display_height), fill=255)  # White background
-        draw_red.rectangle((0, 0, display_width, display_height), fill=255)    # Red background
-        
-        # Draw price and discount in red
-        draw_red.rectangle((0, 0, 90, display_height), fill=0)  # Red background for the left section
+        logging.info("Drawing the price tag...")
+        draw_black.rectangle((0, 0, epd.height, epd.width), fill=255)  # Clear background (white)
+        draw_red.rectangle((0, 0, 90, epd.width), fill=0)  # Red background for the left section
+
+        # Draw red content
         draw_red.text((10, 10), "NOW", font=font24, fill=255)  # White text on red background
         draw_red.text((10, 40), price, font=font24, fill=255)
         draw_red.text((10, 70), f"SAVE\n{discount}%", font=font18, fill=255)
@@ -77,38 +74,32 @@ def update_display_design2(product_name, price, volume, discount, barcode_text):
             product_image = Image.open(product_image_path)
             product_image = product_image.resize((80, 40))  # Resize image to fit the display
             Himage.paste(product_image, (100, 10))
-
+        
         draw_black.text((100, 60), product_name, font=font24, fill=0)  # Black text for product name
         draw_black.text((100, 90), volume, font=font18, fill=0)
+        draw_black.rectangle((100, 120, 220, 130), fill=0)  # Placeholder for barcode
+        draw_black.text((100, 140), barcode_text, font=font18, fill=0)
 
-        # Draw barcode
-        draw_black.rectangle((10, 100, 110, 110), fill=0)  # Placeholder for barcode
-        draw_black.text((10, 112), barcode_text, font=font18, fill=0)
-
-        logging.info("Displaying the images...")
-        
         # Display the image on the e-paper display
         epd.display(epd.getbuffer(Himage), epd.getbuffer(Rimage))
-        
-        logging.info("Display update completed.")
+        logging.info("Updated display with new content")
 
     except IOError as e:
         logging.error(e)
-        
+
 # Function to update the display with the third design
 def update_display_design3(product_name, volume, price_per_liter, price, barcode_text):
     try:
+        # Create a blank image for black content
         Himage = Image.new('1', (epd.height, epd.width), 255)  # 255: white
-        Rimage = Image.new('1', (epd.height, epd.width), 255)  # For red ink
 
         draw_black = ImageDraw.Draw(Himage)
-        draw_red = ImageDraw.Draw(Rimage)
 
         logging.info("Drawing the price tag...")
         draw_black.rectangle((0, 0, epd.height, epd.width), fill=255)  # Clear background (white)
 
         # Draw product name and volume
-        draw_red.text((10, 10), f"{product_name} x {volume}", font=font24, fill=0)  # 0: black
+        draw_black.text((10, 10), f"{product_name} x {volume}", font=font24, fill=0)  # 0: black
 
         # Draw price per liter
         draw_black.text((10, 40), f"Precio por litro\n${price_per_liter}", font=font18, fill=0)
@@ -120,7 +111,8 @@ def update_display_design3(product_name, volume, price_per_liter, price, barcode
         draw_black.rectangle((10, 130, 180, 150), fill=0)  # Placeholder for barcode
         draw_black.text((10, 160), barcode_text, font=font18, fill=0)
 
-        epd.display(epd.getbuffer(Himage), epd.getbuffer(Rimage))
+        # Display the image on the e-paper display
+        epd.display(epd.getbuffer(Himage))
         logging.info("Updated display with new content")
 
     except IOError as e:
@@ -128,7 +120,7 @@ def update_display_design3(product_name, volume, price_per_liter, price, barcode
 
 
 # Initialize the e-paper display
-epd = epd2in13d.EPD()
+epd = epd2in13bc.EPD()
 logging.info("init and Clear")
 epd.init()
 epd.Clear()
