@@ -83,7 +83,17 @@ def update_display_design2(product_name, price, volume, discount, barcode_text):
         draw_black.text((100, 140), barcode_text, font=font18, fill=0)
 
         # Display the image on the e-paper display
-        epd.display(epd.getbuffer(Himage), epd.getbuffer(Rimage))
+        # If the display function takes two arguments, combine the buffers appropriately
+        if hasattr(epd, 'display'):
+            if epd.display.__code__.co_argcount == 2:
+                combined_image = Image.new('1', (display_width, display_height), 255)
+                combined_image.paste(Himage, (0, 0))
+                epd.display(epd.getbuffer(combined_image))
+            elif epd.display.__code__.co_argcount == 3:
+                epd.display(epd.getbuffer(Himage), epd.getbuffer(Rimage))
+            else:
+                raise TypeError(f"EPD.display() accepts {epd.display.__code__.co_argcount} arguments, which is unexpected.")
+        
         logging.info("Updated display with new content")
 
     except IOError as e:
