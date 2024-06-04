@@ -5,7 +5,7 @@ import os
 import logging
 import time
 from PIL import Image, ImageDraw, ImageFont
-from waveshare_epd import epd2in13d # monochrome display
+from waveshare_epd import epd2in13bc  # For tri-color display
 # from waveshare_epd import epd2in13bc  # Update to the correct module for tri-color display
 
 # Set up logging
