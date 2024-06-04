@@ -49,17 +49,19 @@ def update_display_design1(product_name, price):
 # Function to update the display with the second design
 def update_display_design2(product_name, price, volume, discount, barcode_text):
     try:
-        # Create a blank image for drawing (3 colors: black, white, and red)
-        Himage = Image.new('1', (epd.height, epd.width), 255)  # 255: white
-        Rimage = Image.new('1', (epd.height, epd.width), 255)  # For red ink
+        # Ensure correct dimensions for the display
+        display_width, display_height = epd.width, epd.height
+
+        # Create blank images for drawing
+        Himage = Image.new('1', (display_width, display_height), 255)  # 255: white
+        Rimage = Image.new('1', (display_width, display_height), 255)  # For red ink
 
         draw_black = ImageDraw.Draw(Himage)
         draw_red = ImageDraw.Draw(Rimage)
 
-        # Drawing the price tag
-        logging.info("Drawing the price tag...")
-        draw_black.rectangle((0, 0, epd.height, epd.width), fill=255)  # Clear background (white)
-        draw_red.rectangle((0, 0, 90, epd.width), fill=0)  # Red background for the left section
+        # Clear the background
+        draw_black.rectangle((0, 0, display_width, display_height), fill=255)  # White background
+        draw_red.rectangle((0, 0, 90, display_height), fill=0)  # Red background for the left section
 
         # Draw price and discount in red
         draw_red.text((10, 10), "NOW", font=font24, fill=255)  # White text on red background
@@ -72,7 +74,7 @@ def update_display_design2(product_name, price, volume, discount, barcode_text):
             product_image = Image.open(product_image_path)
             product_image = product_image.resize((80, 40))  # Resize image to fit the display
             Himage.paste(product_image, (100, 10))
-        
+
         draw_black.text((100, 60), product_name, font=font24, fill=0)  # Black text for product name
         draw_black.text((100, 90), volume, font=font18, fill=0)
 
@@ -81,16 +83,7 @@ def update_display_design2(product_name, price, volume, discount, barcode_text):
         draw_black.text((100, 140), barcode_text, font=font18, fill=0)
 
         # Display the image on the e-paper display
-        display_function = getattr(epd, 'display', None)
-        if display_function:
-            arg_count = display_function.__code__.co_argcount
-            if arg_count == 2:
-                display_function(epd.getbuffer(Himage))
-            elif arg_count == 3:
-                display_function(epd.getbuffer(Himage), epd.getbuffer(Rimage))
-            else:
-                raise TypeError(f"EPD.display() accepts {arg_count} arguments, which is unexpected.")
-        
+        epd.display(epd.getbuffer(Himage), epd.getbuffer(Rimage))
         logging.info("Updated display with new content")
 
     except IOError as e:
