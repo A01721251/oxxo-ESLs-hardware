@@ -99,14 +99,16 @@ def update_display_design2(product_name, price, volume, discount, barcode_text):
 def update_display_design3(product_name, volume, price_per_liter, price, barcode_text):
     try:
         Himage = Image.new('1', (epd.height, epd.width), 255)  # 255: white
+        Rimage = Image.new('1', (epd.height, epd.width), 255)  # For red ink
 
         draw_black = ImageDraw.Draw(Himage)
+        draw_red = ImageDraw.Draw(Rimage)
 
         logging.info("Drawing the price tag...")
         draw_black.rectangle((0, 0, epd.height, epd.width), fill=255)  # Clear background (white)
 
         # Draw product name and volume
-        draw_black.text((10, 10), f"{product_name} x {volume}", font=font24, fill=0)  # 0: black
+        draw_red.text((10, 10), f"{product_name} x {volume}", font=font24, fill=0)  # 0: black
 
         # Draw price per liter
         draw_black.text((10, 40), f"Precio por litro\n${price_per_liter}", font=font18, fill=0)
