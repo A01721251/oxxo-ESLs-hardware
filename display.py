@@ -28,7 +28,7 @@ def update_display_design1(product_name, price):
         draw_red.rectangle((0, 0, epd.height, epd.width), fill=255)  # Clear background (white)
 
         # Load the OXXO logo and prepare it for drawing
-        logo_path = os.path.join(imgdir, 'Screenshot 2024-06-04 at 5.34.54 p.m..png')
+        logo_path = os.path.join(imgdir, 'oxxo.png')
         if os.path.exists(logo_path):
             logo = Image.open(logo_path)
             logo = logo.convert("RGBA")
@@ -143,7 +143,7 @@ font24 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 24)  # Replace 'Y
 font18 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 18)  # Smaller font size
 
 # Choose the design to display
-design_choice = 2  # Change to 1 for the first design, 2 for the second design, 3 for the third design
+design_choice = 1  # Change to 1 for the first design, 2 for the second design, 3 for the third design
 
 if design_choice == 1:
     update_display_design1('Takis', '$2.99')
