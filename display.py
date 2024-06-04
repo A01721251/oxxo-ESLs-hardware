@@ -3,10 +3,8 @@
 import sys
 import os
 import logging
-import time
 from PIL import Image, ImageDraw, ImageFont
 from waveshare_epd import epd2in13bc  # For tri-color display
-# from waveshare_epd import epd2in13bc  # Update to the correct module for tri-color display
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
@@ -90,10 +88,12 @@ def update_display_design2(product_name, price, volume, discount, barcode_text):
 # Function to update the display with the third design
 def update_display_design3(product_name, volume, price_per_liter, price, barcode_text):
     try:
-        # Create a blank image for black content
+        # Create blank images for black and red content
         Himage = Image.new('1', (epd.height, epd.width), 255)  # 255: white
+        Rimage = Image.new('1', (epd.height, epd.width), 255)  # For red ink
 
         draw_black = ImageDraw.Draw(Himage)
+        draw_red = ImageDraw.Draw(Rimage)
 
         logging.info("Drawing the price tag...")
         draw_black.rectangle((0, 0, epd.height, epd.width), fill=255)  # Clear background (white)
@@ -112,12 +112,11 @@ def update_display_design3(product_name, volume, price_per_liter, price, barcode
         draw_black.text((10, 160), barcode_text, font=font18, fill=0)
 
         # Display the image on the e-paper display
-        epd.display(epd.getbuffer(Himage))
+        epd.display(epd.getbuffer(Himage), epd.getbuffer(Rimage))
         logging.info("Updated display with new content")
 
     except IOError as e:
         logging.error(e)
-
 
 # Initialize the e-paper display
 epd = epd2in13bc.EPD()
@@ -126,26 +125,18 @@ epd.init()
 epd.Clear()
 
 # Load fonts
-font24 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 24)
+font24 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 24)  # Replace 'YourFont.ttf' with the actual font file name
 font18 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 18)  # Smaller font size
 
-# Main loop
-try:
-    while True:
-         # Choose the design to display
-        design_choice = 3  # Change to 1 to display the first design, 2 for the second design
+# Choose the design to display
+design_choice = 2  # Change to 1 for the first design, 2 for the second design, 3 for the third design
 
-        if design_choice == 1:
-            update_display_design1('Takis', '$20.99')
-        elif design_choice == 2:
-            update_display_design2('Takis', '$15.99', '280g', '50', '123456789012')
-        elif design_choice == 3:
-            update_display_design3('Coca Cola', '2.25L', '15.00', '33.75', '7702004003508')
-        
-        # Wait for some time before updating again
-        time.sleep(10)  # Update every 10 seconds
+if design_choice == 1:
+    update_display_design1('Takis', '$2.99')
+elif design_choice == 2:
+    update_display_design2('Takis', '$0.99', '280g', '50', '123456789012')
+elif design_choice == 3:
+    update_display_design3('Coca Cola', '2.25L', '15.00', '33.75', '7702004003508')
 
-except KeyboardInterrupt:
-    logging.info("ctrl + c:")
-    epd2in13d.epdconfig.module_exit(cleanup=True)
-    exit()
+# Don't clear or put the display to sleep, just exit the script
+logging.info("Display update complete, exiting script.")
