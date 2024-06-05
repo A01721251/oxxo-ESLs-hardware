@@ -147,34 +147,34 @@ def update_display_design3(product_name, volume, price_per_liter, price, barcode
 def update_display_design(product_name, volume, original_price, discount_price, barcode_text):
     try:
         # Create blank images for black and red content
-        Himage = Image.new('1', (epd.width, epd.height), 255)  # 255: white
-        Rimage = Image.new('1', (epd.width, epd.height), 255)  # For red ink
+        Himage = Image.new('1', (epd.height, epd.width), 255)  # 255: white
+        Rimage = Image.new('1', (epd.height, epd.width), 255)  # For red ink
 
         draw_black = ImageDraw.Draw(Himage)
         draw_red = ImageDraw.Draw(Rimage)
 
         logging.info("Drawing the price tag...")
-        draw_black.rectangle((0, 0, epd.width, epd.height), fill=255)  # Clear background (white)
+        draw_black.rectangle((0, 0, epd.height, epd.width), fill=255)  # Clear background (white)
 
         # Load smaller fonts
         font16 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 16)
         font12 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 12)
 
         # Load and draw the OXXO logo
-        logo_path = os.path.join(imgdir, 'oxxo.png')
+        logo_path = os.path.join(imgdir, 'OXXO-Symbol.png')
         if os.path.exists(logo_path):
             logo = Image.open(logo_path).convert("RGBA")
-            logo.thumbnail((60, 25), Image.LANCZOS)
+            logo.thumbnail((60, 25), Image.ANTIALIAS)
             # Convert transparent parts to white
             logo = ImageOps.expand(logo, border=(0, 0, 0, 0), fill=(255, 255, 255, 255))
-            Rimage.paste(logo, (epd.width - logo.width - 10, 5), logo)
+            Rimage.paste(logo, (epd.height - logo.width - 10, 5), logo)
 
         # Draw product name and volume
         draw_black.text((5, 5), f"{product_name}", font=font16, fill=0)
         draw_black.text((5, 25), f"{volume}", font=font16, fill=0)
 
         # Load and draw the barcode
-        barcode_path = os.path.join(imgdir, 'barcode.png')
+        barcode_path = os.path.join(imgdir, 'Untitled design.png')
         if os.path.exists(barcode_path):
             barcode = Image.open(barcode_path).convert("RGBA")
             barcode.thumbnail((100, 25), Image.ANTIALIAS)
@@ -185,10 +185,14 @@ def update_display_design(product_name, volume, original_price, discount_price, 
         draw_black.text((5, 75), barcode_text, font=font12, fill=0)
 
         # Draw the red price tag area
-        draw_red.rectangle((epd.width // 2, 5, epd.width - 5, 45), fill=0)  # Red background
-        draw_red.text((epd.width // 2 + 5, 10), f"${original_price}", font=font12, fill=255)  # Original price
-        draw_red.line((epd.width // 2 + 5, 20, epd.width - 10, 20), fill=255)  # Strike-through line
-        draw_red.text((epd.width // 2 + 5, 25), f"${discount_price}", font=font16, fill=0)  # Discount price
+        draw_red.rectangle((epd.height // 2, 5, epd.height - 5, 45), fill=0)  # Red background
+        draw_red.text((epd.height // 2 + 5, 10), f"${original_price}", font=font12, fill=255)  # Original price
+        draw_red.line((epd.height // 2 + 5, 20, epd.height - 10, 20), fill=255)  # Strike-through line
+        draw_red.text((epd.height // 2 + 5, 25), f"${discount_price}", font=font16, fill=0)  # Discount price
+
+        # Rotate images for horizontal display
+        Himage = Himage.rotate(90, expand=True)
+        Rimage = Rimage.rotate(90, expand=True)
 
         # Display the image on the e-paper display
         epd.display(epd.getbuffer(Himage), epd.getbuffer(Rimage))
