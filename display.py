@@ -157,7 +157,7 @@ def update_display_design(product_name, volume, original_price, discount_price, 
         draw_black.rectangle((0, 0, epd.height, epd.width), fill=255)  # Clear background (white)
 
         # Load fonts
-        font24 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 16)
+        font24 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 12)
         font20 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 12)
         font18 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 10)
 
