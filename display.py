@@ -32,11 +32,11 @@ def update_display_design1(product_name, price):
         if os.path.exists(logo_path):
             logo = Image.open(logo_path).convert("RGBA")
             logo_w, logo_h = logo.size
-            max_size = (epd.height - 20, epd.width - 20)  # Leaving some margin
+            max_size = (epd.height // 2, epd.width // 2)  # Scaling down to half the display size
             logo.thumbnail(max_size, Image.ANTIALIAS)
 
-            # Center the logo on the display
-            logo_x = (epd.height - logo.size[0]) // 2
+            # Position the logo on the right side, centered vertically in the right half
+            logo_x = epd.height // 2 + (epd.height // 2 - logo.size[0]) // 2
             logo_y = (epd.width - logo.size[1]) // 2
 
             # Prepare masks for black and red
