@@ -30,7 +30,8 @@ def update_display_design1(product_name, price):
         # Load the OXXO logo and prepare it for drawing
         logo_path = os.path.join(imgdir, 'oxxo.png')
         if os.path.exists(logo_path):
-            logo = Image.open(logo_path).convert("RGBA")
+            logo = Image.open(logo_path).convert("RGB")
+            logo = logo.convert("L")
             logo_w, logo_h = logo.size
             max_size = (epd.height // 2, epd.width // 2)  # Scaling down to half the display size
             logo.thumbnail(max_size, Image.ANTIALIAS)
@@ -39,21 +40,8 @@ def update_display_design1(product_name, price):
             logo_x = epd.height // 2 + (epd.height // 2 - logo.size[0]) // 2
             logo_y = (epd.width - logo.size[1]) // 2
 
-            # Prepare masks for black and red
-            red_mask = Image.new("1", logo.size, 255)
-            black_mask = Image.new("1", logo.size, 255)
-
-            for y in range(logo.size[1]):
-                for x in range(logo.size[0]):
-                    r, g, b, a = logo.getpixel((x, y))
-                    if r > 200 and g < 50 and b < 50 and a > 0:  # Red parts
-                        red_mask.putpixel((x, y), 0)
-                    elif r < 50 and g < 50 and b < 50 and a > 0:  # Black parts
-                        black_mask.putpixel((x, y), 0)
-
-            # Draw the logo parts
-            Rimage.paste(logo, (logo_x, logo_y), mask=red_mask)
-            Himage.paste(logo, (logo_x, logo_y), mask=black_mask)
+            # Paste the logo onto the red image
+            Rimage.paste(logo, (logo_x, logo_y))
 
         # Draw product name in black
         draw_black.text((10, 10), product_name, font=font24, fill=0)  # 0: black
