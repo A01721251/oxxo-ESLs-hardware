@@ -166,7 +166,7 @@ def update_display_design(product_name, volume, original_price, discount_price, 
         if os.path.exists(logo_path):
             logo = Image.open(logo_path).convert("1")
             logo_w, logo_h = logo.size
-            logo.thumbnail((100, 40), Image.ANTIALIAS)
+            logo.thumbnail((70, 28), Image.ANTIALIAS)
             Himage.paste(logo, (10, 10))
 
         # Draw horizontal line below the logo
@@ -180,7 +180,7 @@ def update_display_design(product_name, volume, original_price, discount_price, 
         barcode_path = os.path.join(imgdir, 'barcode.png')
         if os.path.exists(barcode_path):
             barcode = Image.open(barcode_path).convert("1")
-            barcode.thumbnail((180, 40), Image.ANTIALIAS)
+            barcode.thumbnail((140, 31), Image.ANTIALIAS)
             Himage.paste(barcode, (10, 130))
 
         # Draw barcode text
