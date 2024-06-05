@@ -147,14 +147,14 @@ def update_display_design3(product_name, volume, price_per_liter, price, barcode
 def update_display_design(product_name, volume, original_price, discount_price, barcode_text):
     try:
         # Create blank images for black and red content
-        Himage = Image.new('1', (epd.height, epd.width), 255)  # 255: white
-        Rimage = Image.new('1', (epd.height, epd.width), 255)  # For red ink
+        Himage = Image.new('1', (epd.width, epd.height), 255)  # 255: white
+        Rimage = Image.new('1', (epd.width, epd.height), 255)  # For red ink
 
         draw_black = ImageDraw.Draw(Himage)
         draw_red = ImageDraw.Draw(Rimage)
 
         logging.info("Drawing the price tag...")
-        draw_black.rectangle((0, 0, epd.height, epd.width), fill=255)  # Clear background (white)
+        draw_black.rectangle((0, 0, epd.width, epd.height), fill=255)  # Clear background (white)
 
         # Load smaller fonts
         font20 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 20)
@@ -165,31 +165,31 @@ def update_display_design(product_name, volume, original_price, discount_price, 
         logo_path = os.path.join(imgdir, 'oxxo.png')
         if os.path.exists(logo_path):
             logo = Image.open(logo_path).convert("L")
-            logo.thumbnail((80, 30), Image.ANTIALIAS)
-            Himage.paste(logo, (10, 10))
+            logo.thumbnail((60, 25), Image.LANCZOS)
+            Himage.paste(logo, (5, 5))
 
         # Draw horizontal line below the logo
-        draw_black.line((10, 40, epd.height - 10, 40), fill=0)
+        draw_black.line((5, 35, epd.width - 5, 35), fill=0)
 
         # Draw product name and volume
-        draw_black.text((10, 50), f"{product_name}", font=font16, fill=0)
-        draw_black.text((10, 70), f"{volume}", font=font16, fill=0)
+        draw_black.text((5, 40), f"{product_name}", font=font16, fill=0)
+        draw_black.text((5, 60), f"{volume}", font=font16, fill=0)
 
         # Load and draw the barcode
-        barcode_path = os.path.join(imgdir, 'barcode.png')
+        barcode_path = os.path.join(imgdir, 'Untitled design.png')
         if os.path.exists(barcode_path):
             barcode = Image.open(barcode_path).convert("L")
-            barcode.thumbnail((80, 20), Image.ANTIALIAS)
-            Himage.paste(barcode, (10, 100))
+            barcode.thumbnail((100, 30), Image.LANCZOS)
+            Himage.paste(barcode, (5, 80))
 
         # Draw barcode text
-        draw_black.text((10, 115), barcode_text, font=font12, fill=0)
+        draw_black.text((5, 115), barcode_text, font=font12, fill=0)
 
         # Draw the red price tag area
-        draw_red.rectangle((epd.height // 2, 10, epd.height - 10, 70), fill=0)  # Red background
-        draw_red.text((epd.height // 2 + 10, 15), f"${original_price}", font=font12, fill=255)  # Original price
-        draw_red.line((epd.height // 2 + 10, 25, epd.height - 20, 25), fill=255)  # Strike-through line
-        draw_red.text((epd.height // 2 + 10, 30), f"${discount_price}", font=font20, fill=0)  # Discount price
+        draw_red.rectangle((epd.width // 2, 5, epd.width - 5, 70), fill=0)  # Red background
+        draw_red.text((epd.width // 2 + 5, 10), f"${original_price}", font=font12, fill=255)  # Original price
+        draw_red.line((epd.width // 2 + 5, 20, epd.width - 10, 20), fill=255)  # Strike-through line
+        draw_red.text((epd.width // 2 + 5, 30), f"${discount_price}", font=font20, fill=0)  # Discount price
 
         # Display the image on the e-paper display
         epd.display(epd.getbuffer(Himage), epd.getbuffer(Rimage))
