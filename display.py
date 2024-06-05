@@ -162,10 +162,10 @@ def update_display_design(product_name, volume, original_price, discount_price, 
         font12 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 12)
 
         # Load and draw the OXXO logo
-        logo_path = os.path.join(imgdir, 'takis.png')
+        logo_path = os.path.join(imgdir, 'oxxo.png')
         if os.path.exists(logo_path):
-            logo = Image.open(logo_path)
-            logo = logo.resize((50, 20))
+            logo = Image.open(logo_path).convert("L")
+            logo.thumbnail((80, 30), Image.ANTIALIAS)
             Himage.paste(logo, (10, 10))
 
         # Draw horizontal line below the logo
