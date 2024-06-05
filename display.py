@@ -174,8 +174,8 @@ def update_display_design(product_name, volume, original_price, discount_price, 
         draw_black.line((5, 35, epd.width - 5, 35), fill=0)
 
         # Draw product name and volume
-        draw_black.text((5, 40), f"{product_name}", font=font16, fill=0)
-        draw_black.text((5, 60), f"{volume}", font=font16, fill=0)
+        draw_black.text((5, 5), f"{product_name}", font=font16, fill=0)
+        draw_black.text((5, 25), f"{volume}", font=font16, fill=0)
 
         # Load and draw the barcode
         barcode_path = os.path.join(imgdir, 'barcode.png')
@@ -189,10 +189,10 @@ def update_display_design(product_name, volume, original_price, discount_price, 
         draw_black.text((5, 75), barcode_text, font=font12, fill=0)
 
         # Draw the red price tag area
-        draw_red.rectangle((epd.width // 2, 5, epd.width - 5, 70), fill=0)  # Red background
+        draw_red.rectangle((epd.width // 2, 5, epd.width - 5, 45), fill=0)  # Red background
         draw_red.text((epd.width // 2 + 5, 10), f"${original_price}", font=font12, fill=255)  # Original price
         draw_red.line((epd.width // 2 + 5, 20, epd.width - 10, 20), fill=255)  # Strike-through line
-        draw_red.text((epd.width // 2 + 5, 30), f"${discount_price}", font=font20, fill=0)  # Discount price
+        draw_red.text((epd.width // 2 + 5, 25), f"${discount_price}", font=font16, fill=0)  # Discount price
 
         # Display the image on the e-paper display
         epd.display(epd.getbuffer(Himage), epd.getbuffer(Rimage))
