@@ -163,7 +163,7 @@ def update_display_design(product_name, volume, original_price, discount_price, 
         # Load and draw the OXXO logo
         logo_path = os.path.join(imgdir, 'oxxo.png')
         if os.path.exists(logo_path):
-            logo = Image.open(logo_path).convert("RGBA")
+            logo = Image.open(logo_path).convert("L")
             logo.thumbnail((60, 25), Image.ANTIALIAS)
             # Convert transparent parts to white
             logo = ImageOps.expand(logo, border=(0, 0, 0, 0), fill=(255, 255, 255, 255))
@@ -176,7 +176,7 @@ def update_display_design(product_name, volume, original_price, discount_price, 
         # Load and draw the barcode
         barcode_path = os.path.join(imgdir, 'barcode.png')
         if os.path.exists(barcode_path):
-            barcode = Image.open(barcode_path).convert("RGBA")
+            barcode = Image.open(barcode_path).convert("L")
             barcode.thumbnail((100, 25), Image.ANTIALIAS)
             barcode = ImageOps.expand(barcode, border=(0, 0, 0, 0), fill=(255, 255, 255, 255))
             Himage.paste(barcode, (5, 45), barcode)
