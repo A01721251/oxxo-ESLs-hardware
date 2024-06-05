@@ -176,11 +176,11 @@ def update_display_design(product_name, volume, original_price, discount_price, 
         draw_black.text((10, 70), f"{volume}", font=font16, fill=0)
 
         # Load and draw the barcode
-        barcode_path = os.path.join(imgdir, 'old_oxxo.png')
+        barcode_path = os.path.join(imgdir, 'barcode.png')
         if os.path.exists(barcode_path):
-            barcode = Image.open(barcode_path)
-            barcode = barcode.resize((80, 20))
-            Himage.paste(barcode, (10, 90))
+            barcode = Image.open(barcode_path).convert("L")
+            barcode.thumbnail((80, 20), Image.ANTIALIAS)
+            Himage.paste(barcode, (10, 100))
 
         # Draw barcode text
         draw_black.text((10, 115), barcode_text, font=font12, fill=0)
