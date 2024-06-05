@@ -161,7 +161,7 @@ def update_display_design(product_name, volume, original_price, discount_price, 
         font12 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 12)
 
         # Load and draw the OXXO logo
-        logo_path = os.path.join(imgdir, 'OXXO-Symbol.png')
+        logo_path = os.path.join(imgdir, 'oxxo.png')
         if os.path.exists(logo_path):
             logo = Image.open(logo_path).convert("RGBA")
             logo.thumbnail((60, 25), Image.ANTIALIAS)
@@ -174,7 +174,7 @@ def update_display_design(product_name, volume, original_price, discount_price, 
         draw_black.text((5, 25), f"{volume}", font=font16, fill=0)
 
         # Load and draw the barcode
-        barcode_path = os.path.join(imgdir, 'Untitled design.png')
+        barcode_path = os.path.join(imgdir, 'barcode.png')
         if os.path.exists(barcode_path):
             barcode = Image.open(barcode_path).convert("RGBA")
             barcode.thumbnail((100, 25), Image.ANTIALIAS)
