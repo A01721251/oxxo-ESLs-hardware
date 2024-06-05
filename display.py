@@ -164,8 +164,8 @@ def update_display_design(product_name, volume, original_price, discount_price, 
         logo_path = os.path.join(imgdir, 'oxxo.png')
         if os.path.exists(logo_path):
             logo = Image.open(logo_path).convert("RGBA")
-            logo = logo.resize((60, 25), Image.ANTIALIAS)
-            Rimage.paste(logo, (epd.width - logo.width - 10, 5), logo)
+            logo = logo.resize((60, 25), Image.Resampling.LANCZOS)
+            Himage.paste(logo, (epd.width - logo.width - 10, 5), logo)
 
         # Draw product name and volume
         draw_black.text((5, 5), f"{product_name}", font=font16, fill=0)
@@ -175,7 +175,7 @@ def update_display_design(product_name, volume, original_price, discount_price, 
         barcode_path = os.path.join(imgdir, 'barcode.png')
         if os.path.exists(barcode_path):
             barcode = Image.open(barcode_path).convert("RGBA")
-            barcode = barcode.resize((100, 25), Image.ANTIALIAS)
+            barcode = barcode.resize((100, 25), Image.Resampling.LANCZOS)
             Himage.paste(barcode, (5, 45), barcode)
 
         # Draw barcode text
