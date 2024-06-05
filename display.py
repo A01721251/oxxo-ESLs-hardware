@@ -157,9 +157,9 @@ def update_display_design(product_name, volume, original_price, discount_price, 
         draw_black.rectangle((0, 0, epd.height, epd.width), fill=255)  # Clear background (white)
 
         # Load fonts
-        font24 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 24)
-        font20 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 20)
-        font18 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 18)
+        font24 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 16)
+        font20 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 12)
+        font18 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 10)
 
         # Load and draw the OXXO logo
         logo_path = os.path.join(imgdir, 'oxxo.png')
