@@ -142,6 +142,62 @@ def update_display_design3(product_name, volume, price_per_liter, price, barcode
 
     except IOError as e:
         logging.error(e)
+        
+# Function to update the display with the desired design
+def update_display_design(product_name, volume, original_price, discount_price, barcode_text):
+    try:
+        # Create blank images for black and red content
+        Himage = Image.new('1', (epd.height, epd.width), 255)  # 255: white
+        Rimage = Image.new('1', (epd.height, epd.width), 255)  # For red ink
+
+        draw_black = ImageDraw.Draw(Himage)
+        draw_red = ImageDraw.Draw(Rimage)
+
+        logging.info("Drawing the price tag...")
+        draw_black.rectangle((0, 0, epd.height, epd.width), fill=255)  # Clear background (white)
+
+        # Load fonts
+        font24 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 24)
+        font20 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 20)
+        font18 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 18)
+
+        # Load and draw the OXXO logo
+        logo_path = os.path.join(imgdir, 'oxxo.png')
+        if os.path.exists(logo_path):
+            logo = Image.open(logo_path).convert("1")
+            logo_w, logo_h = logo.size
+            logo.thumbnail((100, 40), Image.ANTIALIAS)
+            Himage.paste(logo, (10, 10))
+
+        # Draw horizontal line below the logo
+        draw_black.line((10, 60, epd.height - 10, 60), fill=0)
+
+        # Draw product name and volume
+        draw_black.text((10, 70), f"{product_name}", font=font24, fill=0)
+        draw_black.text((10, 100), f"{volume}", font=font24, fill=0)
+
+        # Load and draw the barcode
+        barcode_path = os.path.join(imgdir, 'barcode.png')
+        if os.path.exists(barcode_path):
+            barcode = Image.open(barcode_path).convert("1")
+            barcode.thumbnail((180, 40), Image.ANTIALIAS)
+            Himage.paste(barcode, (10, 130))
+
+        # Draw barcode text
+        draw_black.text((10, 180), barcode_text, font=font18, fill=0)
+
+        # Draw the red price tag area
+        draw_red.rectangle((epd.height // 2, 10, epd.height - 10, 100), fill=0)  # Red background
+        draw_red.text((epd.height // 2 + 10, 20), f"${original_price}", font=font18, fill=255)  # Original price
+        draw_red.line((epd.height // 2 + 10, 35, epd.height - 20, 35), fill=255)  # Strike-through line
+        draw_red.text((epd.height // 2 + 10, 50), f"${discount_price}", font=font24, fill=0)  # Discount price
+
+        # Display the image on the e-paper display
+        epd.display(epd.getbuffer(Himage), epd.getbuffer(Rimage))
+        logging.info("Updated display with new content")
+
+    except IOError as e:
+        logging.error(e)
 
 # Initialize the e-paper display
 epd = epd2in13bc.EPD()
@@ -154,7 +210,7 @@ font24 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 18)  # Replace 'Y
 font18 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 14)  # Smaller font size
 
 # Choose the design to display
-design_choice = 1  # Change to 1 for the first design, 2 for the second design, 3 for the third design
+design_choice = 4  # Change to 1 for the first design, 2 for the second design, 3 for the third design
 
 if design_choice == 1:
     update_display_design1('Takis', '$2.99')
@@ -162,6 +218,9 @@ elif design_choice == 2:
     update_display_design2('Takis', '$0.99', '280g', '50', '123456789012')
 elif design_choice == 3:
     update_display_design3('Coca Cola', '2.25L', '15.00', '33.75', '7702004003508')
+elif design_choice == 4:
+    # Update the display with the desired design
+    update_display_design('Coca Cola', '355 ml', '12.20', '11.00', '0 35545 62336 78 1')
 
 # Don't clear or put the display to sleep, just exit the script
 logging.info("Display update complete, exiting script.")
