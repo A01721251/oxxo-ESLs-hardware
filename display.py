@@ -150,8 +150,8 @@ epd.init()
 epd.Clear()
 
 # Load fonts
-font24 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 20)  # Replace 'YourFont.ttf' with the actual font file name
-font18 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 16)  # Smaller font size
+font24 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 18)  # Replace 'YourFont.ttf' with the actual font file name
+font18 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 14)  # Smaller font size
 
 # Choose the design to display
 design_choice = 1  # Change to 1 for the first design, 2 for the second design, 3 for the third design
