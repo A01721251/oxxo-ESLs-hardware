@@ -164,9 +164,11 @@ def update_display_design(product_name, volume, original_price, discount_price, 
         # Load and draw the OXXO logo
         logo_path = os.path.join(imgdir, 'oxxo.png')
         if os.path.exists(logo_path):
-            logo = Image.open(logo_path).convert("L")
+            logo = Image.open(logo_path).convert("RGBA")
             logo.thumbnail((60, 25), Image.LANCZOS)
-            Himage.paste(logo, (5, 5))
+            # Convert transparent parts to white
+            logo = ImageOps.expand(logo, border=(0, 0, 0, 0), fill=(255, 255, 255, 255))
+            Rimage.paste(logo, (epd.width - logo.width - 10, 5), logo)
 
         # Draw horizontal line below the logo
         draw_black.line((5, 35, epd.width - 5, 35), fill=0)
@@ -176,14 +178,15 @@ def update_display_design(product_name, volume, original_price, discount_price, 
         draw_black.text((5, 60), f"{volume}", font=font16, fill=0)
 
         # Load and draw the barcode
-        barcode_path = os.path.join(imgdir, 'Untitled design.png')
+        barcode_path = os.path.join(imgdir, 'barcode.png')
         if os.path.exists(barcode_path):
-            barcode = Image.open(barcode_path).convert("L")
+            barcode = Image.open(barcode_path).convert("RGBA")
             barcode.thumbnail((100, 30), Image.LANCZOS)
-            Himage.paste(barcode, (5, 80))
+            barcode = ImageOps.expand(barcode, border=(0, 0, 0, 0), fill=(255, 255, 255, 255))
+            Himage.paste(barcode, (5, 45), barcode)
 
         # Draw barcode text
-        draw_black.text((5, 115), barcode_text, font=font12, fill=0)
+        draw_black.text((5, 75), barcode_text, font=font12, fill=0)
 
         # Draw the red price tag area
         draw_red.rectangle((epd.width // 2, 5, epd.width - 5, 70), fill=0)  # Red background
