@@ -157,7 +157,6 @@ def update_display_design(product_name, volume, original_price, discount_price, 
         draw_black.rectangle((0, 0, epd.width, epd.height), fill=255)  # Clear background (white)
 
         # Load smaller fonts
-        font20 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 20)
         font16 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 16)
         font12 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 12)
 
@@ -170,9 +169,6 @@ def update_display_design(product_name, volume, original_price, discount_price, 
             logo = ImageOps.expand(logo, border=(0, 0, 0, 0), fill=(255, 255, 255, 255))
             Rimage.paste(logo, (epd.width - logo.width - 10, 5), logo)
 
-        # Draw horizontal line below the logo
-        draw_black.line((5, 35, epd.width - 5, 35), fill=0)
-
         # Draw product name and volume
         draw_black.text((5, 5), f"{product_name}", font=font16, fill=0)
         draw_black.text((5, 25), f"{volume}", font=font16, fill=0)
@@ -181,7 +177,7 @@ def update_display_design(product_name, volume, original_price, discount_price, 
         barcode_path = os.path.join(imgdir, 'barcode.png')
         if os.path.exists(barcode_path):
             barcode = Image.open(barcode_path).convert("RGBA")
-            barcode.thumbnail((100, 30), Image.LANCZOS)
+            barcode.thumbnail((100, 25), Image.ANTIALIAS)
             barcode = ImageOps.expand(barcode, border=(0, 0, 0, 0), fill=(255, 255, 255, 255))
             Himage.paste(barcode, (5, 45), barcode)
 
