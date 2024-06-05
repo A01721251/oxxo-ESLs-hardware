@@ -26,6 +26,15 @@ def update_display_design1(product_name, price):
         logging.info("Drawing the price tag...")
         draw_black.rectangle((0, 0, epd.height, epd.width), fill=255)  # Clear background (white)
         draw_red.rectangle((0, 0, epd.height, epd.width), fill=255)  # Clear background (white)
+        
+        # Draw the left side background in black
+        draw_black.rectangle((0, 0, epd.height // 2, epd.width), fill=0)  # Black background on the left side
+
+        # Draw product name in white on the black background
+        draw_black.text((10, 10), product_name, font=font24, fill=255)  # 255: white
+
+        # Draw price in white on the black background
+        draw_black.text((10, 50), price, font=font24, fill=255)  # 255: white
 
         # Load the OXXO logo and prepare it for drawing
         logo_path = os.path.join(imgdir, 'oxxo.png')
@@ -51,10 +60,10 @@ def update_display_design1(product_name, price):
             Rimage.paste(logo, (logo_x, logo_y))
 
         # Draw product name in black
-        draw_black.text((10, 10), product_name, font=font24, fill=0)  # 0: black
+        # draw_black.text((10, 10), product_name, font=font24, fill=0)  # 0: black
 
-        # Draw price in red
-        draw_red.text((10, 50), price, font=font24, fill=0)  # 0: red
+        # # Draw price in red
+        # draw_red.text((10, 50), price, font=font24, fill=0)  # 0: red
 
         # Display the image on the e-paper display
         epd.display(epd.getbuffer(Himage), epd.getbuffer(Rimage))
