@@ -165,7 +165,7 @@ def update_display_design(product_name, volume, original_price, discount_price, 
         logo_path = os.path.join(imgdir, 'oxxo.png')
         if os.path.exists(logo_path):
             logo = Image.open(logo_path)
-            logo.resize((50, 20))
+            logo = logo.resize((50, 20))
             Himage.paste(logo, (10, 10))
 
         # Draw horizontal line below the logo
@@ -179,7 +179,7 @@ def update_display_design(product_name, volume, original_price, discount_price, 
         barcode_path = os.path.join(imgdir, 'barcode.png')
         if os.path.exists(barcode_path):
             barcode = Image.open(barcode_path)
-            barcode.resize((80, 20))
+            barcode = barcode.resize((80, 20))
             Himage.paste(barcode, (10, 90))
 
         # Draw barcode text
