@@ -39,17 +39,16 @@ def update_display_design1(product_name, price):
             logo_x = epd.height // 2 + (epd.height // 2 - logo.size[0]) // 2
             logo_y = (epd.width - logo.size[1]) // 2
 
-            # Prepare mask for red parts of the logo
-            red_mask = Image.new("1", logo.size, 255)
-
+            # Create an image with the red parts of the logo
+            red_logo = Image.new("1", logo.size, 255)
             for y in range(logo.size[1]):
                 for x in range(logo.size[0]):
                     r, g, b, a = logo.getpixel((x, y))
                     if r > 200 and g < 50 and b < 50 and a > 0:  # Red parts
-                        red_mask.putpixel((x, y), 0)
+                        red_logo.putpixel((x, y), 0)
 
-            # Draw the red parts of the logo on the red image
-            Rimage.paste(logo, (logo_x, logo_y), mask=red_mask)
+            # Paste the red parts onto the red image
+            Rimage.paste(red_logo, (logo_x, logo_y))
 
         # Draw product name in black
         draw_black.text((10, 10), product_name, font=font24, fill=0)  # 0: black
