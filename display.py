@@ -41,11 +41,11 @@ def update_display_design1(product_name, price):
 
             # Create an image with the red parts of the logo
             red_logo = Image.new("1", logo.size, 255)
-            for y in range(logo.size[1]):
-                for x in range(logo.size[0]):
-                    r, g, b, a = logo.getpixel((x, y))
-                    if r > 200 and g < 50 and b < 50 and a > 0:  # Red parts
-                        red_logo.putpixel((x, y), 0)
+            # for y in range(logo.size[1]):
+            #     for x in range(logo.size[0]):
+            #         r, g, b, a = logo.getpixel((x, y))
+            #         if r > 200 and g < 50 and b < 50 and a > 0:  # Red parts
+            #             red_logo.putpixel((x, y), 0)
 
             # Paste the red parts onto the red image
             Rimage.paste(red_logo, (logo_x, logo_y))
