@@ -33,7 +33,7 @@ def update_display_design1(product_name, price):
             logo = Image.open(logo_path).convert("RGB")
             logo = logo.convert("L")
             logo_w, logo_h = logo.size
-            max_size = (epd.height // 2, epd.width // 2)  # Scaling down to half the display size
+            max_size = (epd.height , epd.width)  # Scaling down to half the display size
             logo.thumbnail(max_size, Image.ANTIALIAS)
 
             # Position the logo on the right side, centered vertically in the right half
