@@ -190,7 +190,7 @@ def update_display_design(product_name, volume, original_price, discount_price, 
 
         # Calculate half height and center the rectangle vertically
         half_height = (epd.width - 60) // 2
-        y_start = (epd.width - half_height) // 2
+        y_start = (epd.width - half_height)
 
         # Draw the red price tag area
         draw_red.rectangle((epd.height // 2, y_start, epd.height - 5, y_start + half_height), fill=0)  # Red background
