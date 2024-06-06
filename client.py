@@ -6,7 +6,7 @@ from display import update_display_design2
 def fetch_data():
     """Fetch data from the Raspberry Pi 4 server."""
     try:
-        response = requests.get('http://192.168.4.1:5050/get_data')
+        response = requests.get('http://localhost:5050/get_data')
         if response.status_code == 200:
             return response.json()
         else:
