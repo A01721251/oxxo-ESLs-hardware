@@ -28,10 +28,15 @@ def update_display(data):
             if changes:
                 # Assuming you want the first change in the dictionary
                 etiqueta_id, price_info = list(changes.items())[0]  # Get the first item
+                
+                if etiqueta_id != '49':
+                    print("This is not a CocaCola product. Skipping...")
+                    return
+                
                 new_price = price_info.get('new_price')
 
                 # Call update_display_design2 with the new price
-                update_display_design2('Takis', str(new_price), '280g', '50', '123456789012')
+                update_display_design2('Takis', f"${str(new_price)}", '280g', '50', '123456789012')
                 print("Updated display with new content")
             else:
                 print("No price changes available to display")
@@ -45,7 +50,7 @@ def main_loop():
         data = fetch_data()
         if data:
             update_display(data)
-        time.sleep(5)  # Poll every minute
+        time.sleep(1)  # Poll every minute
 
 if __name__ == "__main__":
     main_loop()

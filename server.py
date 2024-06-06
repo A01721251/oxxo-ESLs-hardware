@@ -63,7 +63,7 @@ if __name__ == '__main__':
 
     # Setup APScheduler
     scheduler = BackgroundScheduler()
-    scheduler.add_job(scheduled_task, 'interval', seconds=5)
+    scheduler.add_job(scheduled_task, 'interval', seconds=1)
     scheduler.start()
 
     # Run Flask app
