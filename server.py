@@ -12,7 +12,7 @@ ap_id = 1
 
 def fetch_data_from_backend():
     """Simulate fetching data from the remote backend."""
-    response = requests.get(f'https://dull-deer-watch.loca.lt/api/hardware/AP/{ap_id}')
+    response = requests.get(f'https://oxxo-esls-backend.onrender.com/api/hardware/AP/{ap_id}')
     if response.status_code == 200:
         return response.json()
     return {}
