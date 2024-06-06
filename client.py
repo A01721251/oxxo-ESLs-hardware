@@ -60,7 +60,7 @@ def update_display():
             return jsonify({"status": "This is not a CocaCola product. Skipping..."}), 200
                 
         new_price = price_info.get('new_price')
-        pdate_display_design2('Takis', f"${str(new_price)}", '280g', '50', '123456789012')
+        update_display_design2('Takis', f"${str(new_price)}", '280g', '50', '123456789012')
         return jsonify({"status": "Display updated"}), 200
     else:
         return jsonify({"status": "No changes to display"}), 200
