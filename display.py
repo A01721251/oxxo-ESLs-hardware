@@ -168,31 +168,31 @@ def update_display_design(product_name, volume, original_price, discount_price, 
         draw_black.rectangle((0, 0, epd.height, epd.width), fill=255)  # Clear background (white)
 
         # Load fonts
-        font14 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 14)
-        font18 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 18)
         font12 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 12)
+        font16 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 16)
+        font20 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 20)
 
         # Load and draw the OXXO logo
         logo_path = os.path.join(imgdir, 'oxxo.png')
         if os.path.exists(logo_path):
-            logo = convert_image(logo_path, (80, 30))
-            Himage.paste(logo, (5, 5))
+            logo = convert_image(logo_path, (60, 20))
+            Himage.paste(logo, (10, 10))
 
         # Draw product name and volume
-        draw_black.text((10, 50), f"{product_name}", font=font14, fill=0)
-        draw_black.text((10, 70), f"{volume}", font=font14, fill=0)
+        draw_black.text((10, 40), f"{product_name}", font=font16, fill=0)
+        draw_black.text((10, 60), f"{volume}", font=font12, fill=0)
 
         # Load and draw the barcode
         barcode_path = os.path.join(imgdir, 'barcode.png')
         if os.path.exists(barcode_path):
-            barcode = convert_image(barcode_path, (180, 40))
-            Himage.paste(barcode, (10, 90))
+            barcode = convert_image(barcode_path, (180, 30))
+            Himage.paste(barcode, (10, 80))
 
         # Draw the red price tag area
-        draw_red.rectangle((epd.height // 2, 5, epd.height - 5, 60), fill=0)  # Red background
+        draw_red.rectangle((epd.height // 2, 5, epd.height - 5, 45), fill=0)  # Red background
         draw_red.text((epd.height // 2 + 5, 10), f"${original_price}", font=font12, fill=255)  # Original price
         draw_red.line((epd.height // 2 + 5, 25, epd.height - 10, 25), fill=255)  # Strike-through line
-        draw_red.text((epd.height // 2 + 5, 30), f"${discount_price}", font=font18, fill=0)  # Discount price
+        draw_red.text((epd.height // 2 + 5, 30), f"${discount_price}", font=font20, fill=0)  # Discount price
 
         # Rotate images for horizontal display
         Himage = Himage.rotate(90, expand=True)
