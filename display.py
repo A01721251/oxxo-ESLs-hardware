@@ -194,9 +194,12 @@ def update_display_design(product_name, volume, original_price, discount_price, 
 
         # Draw the red price tag area
         draw_red.rectangle((epd.height // 2, y_start, epd.height - 5, y_start + half_height), fill=0)  # Red background
-        draw_red.text((epd.height // 2 + 5, 10), f"${original_price}", font=font12, fill=255)  # Original price
-        draw_black.line((epd.height // 2 + 5, 10, epd.height - 5, 5), fill=255)  # Strike-through line
-        draw_red.text((epd.height // 2 + 5, 30), f"${discount_price}", font=font20, fill=255)  # Discount price
+
+        # Draw the original price with strike-through
+        text_width, text_height = draw_red.textsize(f"${original_price}", font=font12)
+        draw_red.text((epd.height // 2 + 5, y_start), f"${original_price}", font=font12, fill=255)  # Original price
+        draw_black.line((epd.height // 2 + 5, y_start + text_height // 2, epd.height - 5, y_start + text_height // 2), fill=255)  # Strike-through line
+
 
         # Rotate images for horizontal display
         Himage = Himage.rotate(90, expand=True)
