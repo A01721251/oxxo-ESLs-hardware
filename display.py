@@ -145,9 +145,10 @@ def update_display_design3(product_name, volume, price_per_liter, price, barcode
         
 # Function to convert images to a compatible format
 def convert_image(image_path, size):
-    image = Image.open(image_path).convert("1")
-    image = ImageOps.invert(image)
+    image = Image.open(image_path).convert("L")  # Convert to grayscale
+    image = ImageOps.invert(image)  # Invert colors
     image = image.resize(size, Image.Resampling.LANCZOS)
+    image = image.convert("1")  # Convert to binary (black and white)
     return image
 
 # Function to update the display with the desired design
@@ -202,7 +203,7 @@ def update_display_design(product_name, volume, original_price, discount_price, 
 
     except IOError as e:
         logging.error(e)
-
+        
 # Initialize the e-paper display
 epd = epd2in13bc.EPD()
 logging.info("init and Clear")
