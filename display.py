@@ -145,9 +145,12 @@ def update_display_design3(product_name, volume, price_per_liter, price, barcode
         
 # Function to convert images to a compatible format
 def convert_image(image_path, size):
-    image = Image.open(image_path).convert("L")  # Convert to grayscale
+    image = Image.open(image_path)
+    if image.mode == 'P':  # Handle palette-based images with transparency
+        image = image.convert("RGBA")
+    image = image.convert("L")  # Convert to grayscale
     image = ImageOps.invert(image)  # Invert colors
-    image = image.resize(size, Image.Resampling.LANCZOS)
+    image = image.resize(size, Image.LANCZOS)
     image = image.convert("1")  # Convert to binary (black and white)
     return image
 
