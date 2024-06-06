@@ -18,6 +18,7 @@ def fetch_data():
 def update_display(data):
     """Update the Waveshare e-Paper display with the fetched data."""
     try:
+        print("Received data:", data)  # Print the received data to understand its format
         if isinstance(data, list):
             print("Unexpected data format")
             return
