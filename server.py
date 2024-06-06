@@ -20,8 +20,7 @@ def fetch_data_from_backend():
 
 def compare_prices(old_data, new_data):
     """
-    Compare old data with new data and return changes.
-    Both old_data and new_data should be lists of dictionaries.
+    Compare old data with new data and return changes. Both old_data and new_data should be lists of dictionaries.
     """
     updated_prices = {}
     # Create a quick lookup for old prices
@@ -59,7 +58,7 @@ def update_data():
 
 @app.route('/get_data')
 def get_data():
-    """Endpoint for Pi Zeros to fetch the latest pricing data."""
+    """Endpoint for debugging, fetches the latest pricing data."""
     return jsonify(latest_data)
 
 def scheduled_task():

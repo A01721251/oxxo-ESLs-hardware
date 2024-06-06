@@ -143,6 +143,13 @@ def update_display_design3(product_name, volume, price_per_liter, price, barcode
     except IOError as e:
         logging.error(e)
         
+# Function to convert images to a compatible format
+def convert_image(image_path, size):
+    image = Image.open(image_path).convert("1")
+    image = ImageOps.invert(image)
+    image = image.resize(size, Image.Resampling.LANCZOS)
+    return image
+
 # Function to update the display with the desired design
 def update_display_design(product_name, volume, original_price, discount_price, barcode_text):
     try:
@@ -163,9 +170,8 @@ def update_display_design(product_name, volume, original_price, discount_price, 
         # Load and draw the OXXO logo
         logo_path = os.path.join(imgdir, 'oxxo.png')
         if os.path.exists(logo_path):
-            logo = Image.open(logo_path).convert("RGBA")
-            logo = logo.resize((60, 25), Image.Resampling.LANCZOS)
-            Himage.paste(logo, (epd.width - logo.width - 10, 5), logo)
+            logo = convert_image(logo_path, (60, 25))
+            Himage.paste(logo, (epd.width - logo.width - 10, 5))
 
         # Draw product name and volume
         draw_black.text((5, 5), f"{product_name}", font=font16, fill=0)
@@ -174,9 +180,8 @@ def update_display_design(product_name, volume, original_price, discount_price, 
         # Load and draw the barcode
         barcode_path = os.path.join(imgdir, 'barcode.png')
         if os.path.exists(barcode_path):
-            barcode = Image.open(barcode_path).convert("RGBA")
-            barcode = barcode.resize((100, 25), Image.Resampling.LANCZOS)
-            Himage.paste(barcode, (5, 45), barcode)
+            barcode = convert_image(barcode_path, (100, 25))
+            Himage.paste(barcode, (5, 45))
 
         # Draw barcode text
         draw_black.text((5, 75), barcode_text, font=font12, fill=0)
@@ -209,17 +214,17 @@ font24 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 18)  # Replace 'Y
 font18 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 14)  # Smaller font size
 
 # Choose the design to display
-# design_choice = 4  # Change to 1 for the first design, 2 for the second design, 3 for the third design
+design_choice = 4  # Change to 1 for the first design, 2 for the second design, 3 for the third design
 
-# if design_choice == 1:
-#     update_display_design1('Takis', '$2.99')
-# elif design_choice == 2:
-#     update_display_design2('Takis', '$0.99', '280g', '50', '123456789012')
-# elif design_choice == 3:
-#     update_display_design3('Coca Cola', '2.25L', '15.00', '33.75', '7702004003508')
-# elif design_choice == 4:
-#     # Update the display with the desired design
-#     update_display_design('Coca Cola', '355 ml', '12.20', '11.00', '0 35545 62336 78 1')
+if design_choice == 1:
+    update_display_design1('Takis', '$2.99')
+elif design_choice == 2:
+    update_display_design2('Takis', '$0.99', '280g', '50', '123456789012')
+elif design_choice == 3:
+    update_display_design3('Coca Cola', '2.25L', '15.00', '33.75', '7702004003508')
+elif design_choice == 4:
+    # Update the display with the desired design
+    update_display_design('Coca Cola', '355 ml', '12.20', '11.00', '0 35545 62336 78 1')
 
 # Don't clear or put the display to sleep, just exit the script
 logging.info("Display update complete, exiting script.")
