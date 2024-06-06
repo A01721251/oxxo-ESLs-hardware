@@ -36,6 +36,13 @@ def compare_prices(old_data, new_data):
             }
     return updated_prices
 
+def push_data_to_esl(data):
+    """Push the latest data to the ESL device."""
+    try:
+        response = requests.post(f'http://{esl_ip}:5001/update_display', json=data)
+        print(f"Pushed data to ESL: {response.status_code}")
+    except requests.exceptions.RequestException as e:
+        print(f"Failed to push data to ESL: {e}")
 
 @app.route('/update_data')
 def update_data():
@@ -44,7 +51,10 @@ def update_data():
     new_data = fetch_data_from_backend()
     price_changes = compare_prices(latest_data, new_data)
     latest_data = new_data  # Update the latest_data with the new fetch
+    if price_changes:
+        push_data_to_esl({"status": "Data updated", "changes": price_changes})
     return jsonify({"status": "Data updated", "changes": price_changes})
+
 
 @app.route('/get_data')
 def get_data():
