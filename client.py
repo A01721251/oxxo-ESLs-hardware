@@ -50,7 +50,7 @@ def main_loop():
         data = fetch_data()
         if data:
             update_display(data)
-        time.sleep(1)  # Poll every minute
+        time.sleep(5)  # Poll every minute
 
 if __name__ == "__main__":
     main_loop()
