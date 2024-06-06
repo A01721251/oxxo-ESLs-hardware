@@ -18,18 +18,20 @@ def fetch_data():
 def update_display(data):
     """Update the Waveshare e-Paper display with the fetched data."""
     try:
-        # Navigate through the nested JSON response to get the relevant price information
-        changes = data.get('changes', {})
-        if changes:
-            # Assuming you want the first change in the dictionary
-            etiqueta_id, price_info = list(changes.items())[0]  # Get the first item
-            new_price = price_info.get('new_price')
+        if isinstance(data, dict):
+            changes = data.get('changes', {})
+            if changes:
+                # Assuming you want the first change in the dictionary
+                etiqueta_id, price_info = list(changes.items())[0]  # Get the first item
+                new_price = price_info.get('new_price')
 
-            # Call update_display_design2 with the new price
-            update_display_design2('Takis', str(new_price), '280g', '50', '123456789012')
-            print("Updated display with new content")
+                # Call update_display_design2 with the new price
+                update_display_design2('Takis', str(new_price), '280g', '50', '123456789012')
+                print("Updated display with new content")
+            else:
+                print("No price changes available to display")
         else:
-            print("No price changes available to display")
+            print("Unexpected data format")
     except IOError as e:
         print(e)
 
