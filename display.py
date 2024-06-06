@@ -189,7 +189,7 @@ def update_display_design(product_name, volume, original_price, discount_price, 
             Himage.paste(barcode, (10, 80))
 
         # Calculate half height and center the rectangle vertically
-        half_height = (epd.width - 60)
+        half_height = (epd.width - 40)
         y_start = (epd.width - half_height) // 2
 
         # Draw the red price tag area
@@ -200,6 +200,8 @@ def update_display_design(product_name, volume, original_price, discount_price, 
         draw_red.text((epd.height // 2 + 5, y_start), f"${original_price}", font=font12, fill=255)  # Original price
         draw_black.line((epd.height // 2 + 5, y_start + text_height // 2, epd.height - 5, y_start + text_height // 2), fill=255)  # Strike-through line
 
+        # Draw the discount price below the original price
+        draw_red.text((epd.height // 2 + 5, y_start + text_height + 10), f"${discount_price}", font=font20, fill=255)  # Discount price
 
         # Rotate images for horizontal display
         Himage = Himage.rotate(90, expand=True)
