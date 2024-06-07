@@ -186,8 +186,8 @@ def update_display_design(product_name, volume, original_price, discount_price, 
         # Load and draw the barcode
         barcode_path = os.path.join(imgdir, 'barcode2.png')
         if os.path.exists(barcode_path):
-            barcode = convert_image(barcode_path, (80, 30))
-            Himage.paste(barcode, (10, 80))
+            barcode = convert_image(barcode_path, (120, 50))
+            Himage.paste(barcode, (10, 70))
 
         # Calculate half height and center the rectangle vertically
         half_height = (epd.width - 40)
