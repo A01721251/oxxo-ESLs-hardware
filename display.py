@@ -184,9 +184,9 @@ def update_display_design(product_name, volume, original_price, discount_price, 
         draw_black.text((10, 60), f"{volume}", font=font12, fill=0)
 
         # Load and draw the barcode
-        barcode_path = os.path.join(imgdir, 'barcode.png')
+        barcode_path = os.path.join(imgdir, 'barcode2.png')
         if os.path.exists(barcode_path):
-            barcode = convert_image(barcode_path, (180, 30))
+            barcode = convert_image(barcode_path, (80, 30))
             Himage.paste(barcode, (10, 80))
 
         # Calculate half height and center the rectangle vertically
@@ -195,17 +195,26 @@ def update_display_design(product_name, volume, original_price, discount_price, 
 
         # Draw the red price tag area
         draw_red.rectangle((epd.height // 2, y_start, epd.height - 5, y_start + half_height), fill=0)  # Red background
-
-        # Draw the original price text
-        draw_red.text((epd.height // 2 + 5, y_start), f"${original_price}", font=font12, fill=0)
-
+        
         # Measure the width of the text to ensure the line strikes through the entire text
         text_width, text_height = draw_red.textsize(f"${original_price}", font=font12)
 
-        # Draw the strike-through line
-        draw_black.line(
-            (epd.height // 2 + 5, y_start + text_height // 2, epd.height // 2 + 5 + text_width, y_start + text_height // 2), 
-            fill=0
+        # Draw the original price text
+        draw_red.text((epd.height // 2 + 5, y_start), f"${original_price}", font=font12, fill=255)
+
+        # Define extra width and height for the strike-through line
+        extra_width = 12  # Adjust this value as needed
+        extra_height = 3  # Adjust this value as needed
+
+        # Draw the thicker strike-through line
+        draw_red.line(
+            (
+                epd.height // 2 + 5 - extra_width // 2,               # Start X (left side)
+                y_start + text_height // 2 - extra_height // 2,       # Start Y (slightly above center)
+                epd.height // 2 + 5 + text_width + extra_width // 2,  # End X (right side)
+                y_start + text_height // 2 + extra_height // 2        # End Y (slightly below center)
+            ), 
+            fill=255, width=extra_height
         )
 
         # Draw the discount price below the original price
