@@ -196,10 +196,17 @@ def update_display_design(product_name, volume, original_price, discount_price, 
         # Draw the red price tag area
         draw_red.rectangle((epd.height // 2, y_start, epd.height - 5, y_start + half_height), fill=0)  # Red background
 
-        # Draw the original price with strike-through
+        # Draw the original price text
+        draw_red.text((epd.height // 2 + 5, y_start), f"${original_price}", font=font12, fill=0)
+
+        # Measure the width of the text to ensure the line strikes through the entire text
         text_width, text_height = draw_red.textsize(f"${original_price}", font=font12)
-        draw_red.text((epd.height // 2 + 5, y_start), f"${original_price}", font=font12, fill=0)  # Original price
-        draw_black.line((epd.height // 2 + 5, y_start + text_height // 2, epd.height - 5, y_start + text_height // 2), fill=255)  # Strike-through line
+
+        # Draw the strike-through line
+        draw_black.line(
+            (epd.height // 2 + 5, y_start + text_height // 2, epd.height // 2 + 5 + text_width, y_start + text_height // 2), 
+            fill=0
+        )
 
         # Draw the discount price below the original price
         draw_red.text((epd.height // 2 + 5, y_start + text_height + 10), f"${discount_price}", font=font20, fill=255)  # Discount price
