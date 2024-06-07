@@ -171,7 +171,7 @@ def update_display_design(product_name, volume, original_price, discount_price, 
         font12 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 12)
         font14 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 14)
         font16 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 16)
-        font20 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 20)
+        font20 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 22)
 
         # Load and draw the OXXO logo
         logo_path = os.path.join(imgdir, 'oxxo.png')
@@ -186,8 +186,8 @@ def update_display_design(product_name, volume, original_price, discount_price, 
         # Load and draw the barcode
         barcode_path = os.path.join(imgdir, 'barcode2.png')
         if os.path.exists(barcode_path):
-            barcode = convert_image(barcode_path, (120, 50))
-            Himage.paste(barcode, (10, 70))
+            barcode = convert_image(barcode_path, (100, 40))
+            Himage.paste(barcode, (10, 60))
 
         # Calculate half height and center the rectangle vertically
         half_height = (epd.width - 40)
@@ -197,10 +197,10 @@ def update_display_design(product_name, volume, original_price, discount_price, 
         draw_red.rectangle((epd.height // 2, y_start, epd.height - 5, y_start + half_height), fill=0)  # Red background
         
         # Measure the width of the text to ensure the line strikes through the entire text
-        text_width, text_height = draw_red.textsize(f"${original_price}", font=font12)
+        text_width, text_height = draw_red.textsize(f"${original_price}", font=font14)
 
         # Draw the original price text
-        draw_red.text((epd.height // 2 + 5, y_start), f"${original_price}", font=font12, fill=255)
+        draw_red.text((epd.height // 2 + 5, y_start), f"${original_price}", font=font14, fill=255)
 
         # Define extra width and height for the strike-through line
         extra_width = 12  # Adjust this value as needed
