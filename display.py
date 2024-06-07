@@ -169,17 +169,18 @@ def update_display_design(product_name, volume, original_price, discount_price, 
 
         # Load fonts
         font12 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 12)
+        font14 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 14)
         font16 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 16)
         font20 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 20)
 
         # Load and draw the OXXO logo
         logo_path = os.path.join(imgdir, 'oxxo.png')
         if os.path.exists(logo_path):
-            logo = convert_image(logo_path, (60, 20))
+            logo = convert_image(logo_path, (60, 25))
             Himage.paste(logo, (10, 10))
 
         # Draw product name and volume
-        draw_black.text((10, 40), f"{product_name}", font=font16, fill=0)
+        draw_black.text((10, 40), f"{product_name}", font=font14, fill=0)
         draw_black.text((10, 60), f"{volume}", font=font12, fill=0)
 
         # Load and draw the barcode
@@ -197,7 +198,7 @@ def update_display_design(product_name, volume, original_price, discount_price, 
 
         # Draw the original price with strike-through
         text_width, text_height = draw_red.textsize(f"${original_price}", font=font12)
-        draw_red.text((epd.height // 2 + 5, y_start), f"${original_price}", font=font12, fill=255)  # Original price
+        draw_red.text((epd.height // 2 + 5, y_start), f"${original_price}", font=font12, fill=0)  # Original price
         draw_black.line((epd.height // 2 + 5, y_start + text_height // 2, epd.height - 5, y_start + text_height // 2), fill=255)  # Strike-through line
 
         # Draw the discount price below the original price
