@@ -155,7 +155,7 @@ def convert_image(image_path, size):
     return image
 
 # Function to update the display with the desired design
-def update_display_design(product_name, volume, original_price, discount_price, barcode_text):
+def update_display_design(product_name, volume, original_price, discount_price):
     try:
         # Create blank images for black and red content
         Himage = Image.new('1', (epd.height, epd.width), 255)  # 255: white
@@ -242,17 +242,17 @@ epd.Clear()
 # font18 = ImageFont.truetype(os.path.join(fontdir, 'Font.ttf'), 14)  # Smaller font size
 
 # Choose the design to display
-design_choice = 4  # Change to 1 for the first design, 2 for the second design, 3 for the third design
+# design_choice = 4  # Change to 1 for the first design, 2 for the second design, 3 for the third design
 
-if design_choice == 1:
-    update_display_design1('Takis', '$2.99')
-elif design_choice == 2:
-    update_display_design2('Takis', '$0.99', '280g', '50', '123456789012')
-elif design_choice == 3:
-    update_display_design3('Coca Cola', '2.25L', '15.00', '33.75', '7702004003508')
-elif design_choice == 4:
-    # Update the display with the desired design
-    update_display_design('Coca Cola', '355 ml', '12.20', '11.00', '0 35545 62336 78 1')
+# if design_choice == 1:
+#     update_display_design1('Takis', '$2.99')
+# elif design_choice == 2:
+#     update_display_design2('Takis', '$0.99', '280g', '50', '123456789012')
+# elif design_choice == 3:
+#     update_display_design3('Coca Cola', '2.25L', '15.00', '33.75', '7702004003508')
+# elif design_choice == 4:
+#     # Update the display with the desired design
+#     update_display_design('Coca Cola', '355 ml', '12.20', '11.00')
 
-# Don't clear or put the display to sleep, just exit the script
-logging.info("Display update complete, exiting script.")
+# # Don't clear or put the display to sleep, just exit the script
+# logging.info("Display update complete, exiting script.")

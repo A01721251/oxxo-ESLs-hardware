@@ -1,12 +1,12 @@
 import requests
 import time
 from waveshare_epd import epd2in13_V2
-from display import update_display_design2
+from display import update_display_design
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-esl_id = str(49)
+esl_id = str(15)
 
 @app.route('/update_display', methods=['POST'])
 def update_display():
@@ -20,7 +20,8 @@ def update_display():
             return jsonify({"status": "This is not a CocaCola product. Skipping..."}), 200
                 
         new_price = price_info.get('new_price')
-        update_display_design2('Takis', f"${str(new_price)}", '280g', '50', '123456789012')
+        # update_display_design2('Takis', f"${str(new_price)}", '280g', '50', '123456789012')
+        update_display_design('Coca Cola', '355 ml', '12.20', f"${str(new_price)}")
         return jsonify({"status": "Display updated"}), 200
     else:
         return jsonify({"status": "No changes to display"}), 200
