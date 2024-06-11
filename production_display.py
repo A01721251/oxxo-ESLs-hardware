@@ -4,7 +4,7 @@ import sys
 import os
 import logging
 from PIL import Image, ImageDraw, ImageFont, ImageOps
-from waveshare_epd import epd2in13_V3  # Change to epd2in13_V3 or epd2in13_V4 as per your model
+from waveshare_epd import epd2in13b_V4  # Change to epd2in13b_V4
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
@@ -31,10 +31,11 @@ def convert_image(image_path, size):
 # Function to update the display with the desired design
 def update_display_design(product_name, volume, original_price, discount_price):
     try:
-        epd = epd2in13_V3.EPD()  # Initialize the display for the new model
+        epd = epd2in13b_V4.EPD()  # Initialize the display for the new model
         logging.info("init and Clear")
         epd.init()
-        epd.Clear(0xFF)
+        epd.Clear()
+        time.sleep(1)
 
         # Create blank images for black and red content
         black_image = Image.new('1', (epd.height, epd.width), 255)  # 255: white
@@ -76,7 +77,7 @@ def update_display_design(product_name, volume, original_price, discount_price):
 
         # Draw the red price tag area
         draw_red.rectangle((epd.height // 2, y_start, epd.height - 5, y_start + half_height), fill=0)  # Red background
-        
+
         # Measure the width of the text to ensure the line strikes through the entire text
         text_width, text_height = draw_red.textsize(f"${original_price}", font=font14)
 
@@ -117,10 +118,10 @@ def update_display_design(product_name, volume, original_price, discount_price):
         logging.error(e)
 
 # Initialize the e-paper display
-epd = epd2in13_V3.EPD()
+epd = epd2in13b_V4.EPD()
 logging.info("init and Clear")
 epd.init()
-epd.Clear(0xFF)
+epd.Clear()
 
 # Update the display with a sample design
 update_display_design('Coca Cola', '355 ml', '12.20', '11.00')
