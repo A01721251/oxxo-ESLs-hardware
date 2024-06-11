@@ -27,12 +27,18 @@ def convert_image(image_path, size):
 # Function to update the display with the desired design
 def update_display_design(product_name, volume, original_price, discount_price):
     try:
+        # Initialize the e-paper display
+        epd = epd2in13_V3.EPD()
+        logging.info("init and Clear")
+        epd.init()
+        epd.Clear()
+        
         # Create blank images for black and red content
-        Himage = Image.new('1', (epd.height, epd.width), 255)  # 255: white
-        Rimage = Image.new('1', (epd.height, epd.width), 255)  # For red ink
+        black_image = Image.new('1', (epd.height, epd.width), 255)  # 255: white
+        red_image = Image.new('1', (epd.height, epd.width), 255)  # For red ink
 
-        draw_black = ImageDraw.Draw(Himage)
-        draw_red = ImageDraw.Draw(Rimage)
+        draw_black = ImageDraw.Draw(black_image)
+        draw_red = ImageDraw.Draw(red_image)
 
         logging.info("Drawing the price tag...")
         draw_black.rectangle((0, 0, epd.height, epd.width), fill=255)  # Clear background (white)
@@ -91,21 +97,20 @@ def update_display_design(product_name, volume, original_price, discount_price):
         draw_red.text((epd.height // 2 + 5, y_start + text_height + 10), f"${discount_price}", font=font20, fill=255)  # Discount price
 
         # Rotate images for horizontal display
-        Himage = Himage.rotate(90, expand=True)
-        Rimage = Rimage.rotate(90, expand=True)
+        black_image = Himage.rotate(90, expand=True)
+        red_image = Rimage.rotate(90, expand=True)
 
+        # Combine black and red images into a single image for display
+        combined_image = Image.new('1', (epd.height, epd.width), 255)
+        combined_image.paste(black_image, (0, 0))
+        combined_image.paste(red_image, (0, 0), mask=red_image)
+        
         # Display the image on the e-paper display
-        epd.display(epd.getbuffer(Himage), epd.getbuffer(Rimage))
+        epd.display(epd.getbuffer(combined_image))
         logging.info("Updated display with new content")
-
+        
     except IOError as e:
         logging.error(e)
-        
-# Initialize the e-paper display
-epd = epd2in13_V3.EPD()
-logging.info("init and Clear")
-epd.init()
-epd.Clear()
 
 
 update_display_design('Coca Cola', '355 ml', '12.20', '11.00')
