@@ -12,27 +12,30 @@ logging.basicConfig(level=logging.DEBUG)
 # Paths for fonts and images
 imgdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'images')
 fontdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'fonts')
-        
+
 # Function to convert images to a compatible format
 def convert_image(image_path, size):
-    image = Image.open(image_path)
-    if image.mode == 'P':  # Handle palette-based images with transparency
-        image = image.convert("RGBA")
-    image = image.convert("L")  # Convert to grayscale
-    image = ImageOps.invert(image)  # Invert colors
-    image = image.resize(size, Image.LANCZOS)
-    image = image.convert("1")  # Convert to binary (black and white)
-    return image
+    try:
+        image = Image.open(image_path)
+        if image.mode == 'P':  # Handle palette-based images with transparency
+            image = image.convert("RGBA")
+        image = image.convert("L")  # Convert to grayscale
+        image = ImageOps.invert(image)  # Invert colors
+        image = image.resize(size, Image.LANCZOS)
+        image = image.convert("1")  # Convert to binary (black and white)
+        return image
+    except IOError as e:
+        logging.error(f"Error converting image: {e}")
+        return None
 
 # Function to update the display with the desired design
 def update_display_design(product_name, volume, original_price, discount_price):
     try:
-        # Initialize the e-paper display
-        epd = epd2in13_V3.EPD()
+        epd = epd2in13_V3.EPD()  # Initialize the display for the new model
         logging.info("init and Clear")
         epd.init()
-        epd.Clear()
-        
+        epd.Clear(0xFF)
+
         # Create blank images for black and red content
         black_image = Image.new('1', (epd.height, epd.width), 255)  # 255: white
         red_image = Image.new('1', (epd.height, epd.width), 255)  # For red ink
@@ -53,7 +56,8 @@ def update_display_design(product_name, volume, original_price, discount_price):
         logo_path = os.path.join(imgdir, 'oxxo.png')
         if os.path.exists(logo_path):
             logo = convert_image(logo_path, (60, 25))
-            black_image.paste(logo, (10, 10))
+            if logo:
+                black_image.paste(logo, (10, 10))
 
         # Draw product name and volume
         draw_black.text((10, 40), f"{product_name}", font=font14, fill=0)
@@ -63,7 +67,8 @@ def update_display_design(product_name, volume, original_price, discount_price):
         barcode_path = os.path.join(imgdir, 'barcode2.png')
         if os.path.exists(barcode_path):
             barcode = convert_image(barcode_path, (70, 20))
-            black_image.paste(barcode, (10, 80))
+            if barcode:
+                black_image.paste(barcode, (10, 80))
 
         # Calculate half height and center the rectangle vertically
         half_height = (epd.width - 40)
@@ -100,19 +105,24 @@ def update_display_design(product_name, volume, original_price, discount_price):
         black_image = black_image.rotate(90, expand=True)
         red_image = red_image.rotate(90, expand=True)
 
-        # Combine black and red images into a single image for display
-        combined_image = Image.new('1', (epd.height, epd.width), 255)
-        combined_image.paste(black_image, (0, 0))
-        combined_image.paste(red_image, (0, 0), mask=red_image)
-        
+        # Save images for debugging
+        black_image.save(os.path.join(imgdir, 'black_image_debug.png'))
+        red_image.save(os.path.join(imgdir, 'red_image_debug.png'))
+
         # Display the image on the e-paper display
-        epd.display(epd.getbuffer(combined_image))
+        epd.display(epd.getbuffer(black_image), epd.getbuffer(red_image))
         logging.info("Updated display with new content")
-        
+
     except IOError as e:
         logging.error(e)
 
+# Initialize the e-paper display
+epd = epd2in13_V3.EPD()
+logging.info("init and Clear")
+epd.init()
+epd.Clear(0xFF)
 
+# Update the display with a sample design
 update_display_design('Coca Cola', '355 ml', '12.20', '11.00')
 
 # Don't clear or put the display to sleep, just exit the script
