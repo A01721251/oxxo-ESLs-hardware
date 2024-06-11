@@ -53,7 +53,7 @@ def update_display_design(product_name, volume, original_price, discount_price):
         logo_path = os.path.join(imgdir, 'oxxo.png')
         if os.path.exists(logo_path):
             logo = convert_image(logo_path, (60, 25))
-            Himage.paste(logo, (10, 10))
+            black_image.paste(logo, (10, 10))
 
         # Draw product name and volume
         draw_black.text((10, 40), f"{product_name}", font=font14, fill=0)
@@ -63,7 +63,7 @@ def update_display_design(product_name, volume, original_price, discount_price):
         barcode_path = os.path.join(imgdir, 'barcode2.png')
         if os.path.exists(barcode_path):
             barcode = convert_image(barcode_path, (70, 20))
-            Himage.paste(barcode, (10, 80))
+            black_image.paste(barcode, (10, 80))
 
         # Calculate half height and center the rectangle vertically
         half_height = (epd.width - 40)
@@ -97,8 +97,8 @@ def update_display_design(product_name, volume, original_price, discount_price):
         draw_red.text((epd.height // 2 + 5, y_start + text_height + 10), f"${discount_price}", font=font20, fill=255)  # Discount price
 
         # Rotate images for horizontal display
-        black_image = Himage.rotate(90, expand=True)
-        red_image = Rimage.rotate(90, expand=True)
+        black_image = black_image.rotate(90, expand=True)
+        red_image = red_image.rotate(90, expand=True)
 
         # Combine black and red images into a single image for display
         combined_image = Image.new('1', (epd.height, epd.width), 255)
