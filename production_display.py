@@ -2,6 +2,7 @@
 # -*- coding:utf-8 -*-
 import sys
 import os
+import time  # Import the time module
 import logging
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 from waveshare_epd import epd2in13b_V4  # Change to epd2in13b_V4
