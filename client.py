@@ -1,7 +1,7 @@
 import requests
 import time
 from waveshare_epd import epd2in13_V2
-from display import update_display_design
+from production_display import update_display_design
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
