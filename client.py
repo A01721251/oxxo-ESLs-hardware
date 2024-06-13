@@ -6,7 +6,7 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-esl_id = str(15)
+esl_id = str(26)
 
 @app.route('/update_display', methods=['POST'])
 def update_display():
