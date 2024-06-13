@@ -9,7 +9,7 @@ app = Flask(__name__)
 latest_data = {}
 
 ap_id = 1
-esl_ip = '192.168.99.114'
+esl_ip = '170.20.10.5'
 
 def fetch_data_from_backend():
     """Simulate fetching data from the remote backend."""
