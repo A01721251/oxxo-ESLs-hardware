@@ -125,7 +125,7 @@ epd.init()
 epd.Clear()
 
 # Update the display with a sample design
-update_display_design('Coca Cola', '355 ml', '12.20', '11.00')
+update_display_design('Coca Cola', '355 ml', '12.20', '10.00')
 
 # Don't clear or put the display to sleep, just exit the script
 logging.info("Display update complete, exiting script.")
